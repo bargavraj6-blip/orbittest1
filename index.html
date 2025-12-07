@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Feed Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Customize Theme Button -->
+    <button class="customize-btn" id="customizeBtn">
+        <i class="fas fa-palette"></i>
+        <span>Customize Theme</span>
+    </button>
+
+    <!-- Theme Customization Panel -->
+    <div class="customize-panel" id="customizePanel">
+        <div class="panel-header">
+            <h2><i class="fas fa-palette"></i> Customize Theme</h2>
+            <button class="close-panel" id="closePanel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="panel-content">
+            <!-- Primary Color -->
+            <div class="setting-section">
+                <label class="setting-label">Choose Primary Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="primaryColorPicker" value="#ff3b30">
+                </div>
+                <div class="color-palette">
+                    <button class="color-circle active" data-color="#ff3b30" style="background: #ff3b30;"></button>
+                    <button class="color-circle" data-color="#ff9500" style="background: #ff9500;"></button>
+                    <button class="color-circle" data-color="#ffcc00" style="background: #ffcc00;"></button>
+                    <button class="color-circle" data-color="#34c759" style="background: #34c759;"></button>
+                    <button class="color-circle" data-color="#00c7be" style="background: #00c7be;"></button>
+                    <button class="color-circle" data-color="#007aff" style="background: #007aff;"></button>
+                    <button class="color-circle" data-color="#5856d6" style="background: #5856d6;"></button>
+                    <button class="color-circle" data-color="#ff2d55" style="background: #ff2d55;"></button>
+                </div>
+            </div>
+
+            <!-- Scrolling Style -->
+            <div class="setting-section">
+                <label class="setting-label">Scrolling Style</label>
+                <div class="scroll-grid">
+                    <button class="scroll-btn active" data-scroll="smooth">
+                        <i class="fas fa-water"></i>
+                        <span>Smooth</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="snap">
+                        <i class="fas fa-magnet"></i>
+                        <span>Snap</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="momentum">
+                        <i class="fas fa-bolt"></i>
+                        <span>Momentum</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="parallax">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Parallax</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="elastic">
+                        <i class="fas fa-arrows-up-down"></i>
+                        <span>Elastic</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="cinematic">
+                        <i class="fas fa-film"></i>
+                        <span>Cinematic</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="carousel">
+                        <i class="fas fa-rotate"></i>
+                        <span>Carousel</span>
+                    </button>
+                    <button class="scroll-btn" data-scroll="infinite">
+                        <i class="fas fa-infinity"></i>
+                        <span>Infinite</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Background Style -->
+            <div class="setting-section">
+                <label class="setting-label">Background Style</label>
+                <div class="bg-grid">
+                    <button class="bg-btn" data-bg="light">
+                        <i class="fas fa-sun"></i>
+                        <span>Light</span>
+                    </button>
+                    <button class="bg-btn active" data-bg="dark">
+                        <i class="fas fa-moon"></i>
+                        <span>Dark</span>
+                    </button>
+                    <button class="bg-btn" data-bg="glass">
+                        <i class="fas fa-gem"></i>
+                        <span>Glass</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Spacing -->
+            <div class="setting-section">
+                <label class="setting-label">Card Spacing</label>
+                <div class="slider-wrapper">
+                    <input type="range" id="spacingSlider" min="0" max="32" value="0" step="4">
+                    <div class="slider-value">
+                        <span id="spacingValue">0</span><span>px</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-wrapper">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-location">
+                <i class="fas fa-location-dot"></i>
+                <div class="location-info">
+                    <span class="location-city">New York <i class="fas fa-chevron-down"></i></span>
+                    <span class="location-coords">21.246 N, 72.889 E</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-icon-btn">
+                    <i class="far fa-bell"></i>
+                </button>
+                <button class="header-icon-btn">
+                    <i class="far fa-comment-dots"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Feed Container -->
+        <div class="feed-scroll" id="feedScroll">
+            <!-- Post 1 - Text -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=12" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Jamoe sora</h3>
+                        <p class="post-time">25 minute ago • Surat, Gujarat</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.3</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>I used to Jump Straight into visuals. Open Figma. Start Designing. Ship it fast. <span class="expand-text">More</span></p>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>2</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>1</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Post 2 - Image -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=12" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Jamoe sora</h3>
+                        <p class="post-time">25 minute ago • Surat, Gujarat</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.3</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-media">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1000&fit=crop" alt="Nature">
+                    <div class="media-badge">1/2</div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>2</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>1</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>I used to Jump Straight into visuals. Open Figma. Start Designing... <span class="expand-text">More</span></p>
+                </div>
+            </article>
+
+            <!-- Post 3 - Text -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=8" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Sarah Johnson</h3>
+                        <p class="post-time">1 hour ago • Mumbai, India</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.8</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>Just finished an amazing project! The team worked incredibly hard, and the results exceeded all expectations. 🚀 <span class="expand-text">More</span></p>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>45</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>0</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>8</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Post 4 - Video -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=15" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Mike Chen</h3>
+                        <p class="post-time">2 hours ago • Tokyo, Japan</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.5</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-media">
+                    <img src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&h=1000&fit=crop" alt="Lake">
+                    <div class="media-badge">1/2</div>
+                    <button class="sound-toggle">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>89</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>3</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>15</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Post 5 - Image -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=20" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Emma Watson</h3>
+                        <p class="post-time">3 hours ago • London, UK</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.9</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-media">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1000&fit=crop" alt="Mountains">
+                    <div class="media-badge">1/3</div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>234</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>5</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>42</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>Adventure awaits! Nothing beats the feeling of standing on top of a mountain. 🏔️ <span class="expand-text">More</span></p>
+                </div>
+            </article>
+
+            <!-- Post 6 - Text -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=25" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Alex Kumar</h3>
+                        <p class="post-time">4 hours ago • Bangalore, India</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.6</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>Pro tip for developers: Always write clean code, document well, and never skip testing. 💻✨ <span class="expand-text">More</span></p>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>156</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>2</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>28</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Post 7 - Image -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=30" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">Lisa Park</h3>
+                        <p class="post-time">5 hours ago • Seoul, Korea</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.7</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-media">
+                    <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&h=1000&fit=crop" alt="Sunset">
+                    <div class="media-badge">1/2</div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>321</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>1</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>67</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>Golden hour magic! There's something special about sunsets by the beach. 🌅 <span class="expand-text">More</span></p>
+                </div>
+            </article>
+
+            <!-- Post 8 - Text -->
+            <article class="feed-card">
+                <div class="card-header">
+                    <img src="https://i.pravatar.cc/100?img=35" alt="User" class="user-pic">
+                    <div class="user-info">
+                        <h3 class="user-name">David Miller</h3>
+                        <p class="post-time">6 hours ago • New York, USA</p>
+                    </div>
+                    <div class="post-rating">
+                        <i class="fas fa-star"></i>
+                        <span>4.4</span>
+                    </div>
+                    <button class="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+
+                <div class="card-text">
+                    <p>Coffee, code, repeat. That's the developer life! ☕💻 Building something amazing today. <span class="expand-text">More</span></p>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>78</span>
+                    </button>
+                    <button class="action-icon down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>1</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="far fa-comment"></i>
+                        <span>12</span>
+                    </button>
+                    <button class="action-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="location-tag">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </button>
+                </div>
+            </article>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active">
+                <i class="fas fa-home"></i>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="nav-item add-post">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-compass"></i>
+            </button>
+            <button class="nav-item">
+                <i class="far fa-user"></i>
+            </button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
