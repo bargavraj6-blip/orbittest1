@@ -2,6 +2,7 @@
 const customizeBtn = document.getElementById('customizeBtn');
 const customizePanel = document.getElementById('customizePanel');
 const closePanel = document.getElementById('closePanel');
+const backBtn = document.getElementById('backBtn');
 const colorPicker = document.getElementById('primaryColorPicker');
 const colorCircles = document.querySelectorAll('.color-circle');
 const scrollBtns = document.querySelectorAll('.scroll-btn');
@@ -10,6 +11,8 @@ const spacingSlider = document.getElementById('spacingSlider');
 const spacingValue = document.getElementById('spacingValue');
 const feedScroll = document.getElementById('feedScroll');
 const applyBtn = document.getElementById('applyBtn');
+const mainHeader = document.getElementById('mainHeader');
+const bottomNav = document.getElementById('bottomNav');
 
 // Temporary settings storage for preview
 let pendingSettings = {
@@ -33,6 +36,11 @@ customizeBtn.addEventListener('click', () => {
 });
 
 closePanel.addEventListener('click', () => {
+    customizePanel.classList.remove('open');
+});
+
+// Back button functionality
+backBtn.addEventListener('click', () => {
     customizePanel.classList.remove('open');
 });
 
@@ -694,16 +702,6 @@ function createFloatingNumber(element, text, color) {
     setTimeout(() => floating.remove(), 1000);
 }
 
-// Add animation to document
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes floatUp {
-        0% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 0; transform: translateY(-40px); }
-    }
-`;
-document.head.appendChild(style);
-
 // === NOTIFICATION SYSTEM ===
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
@@ -713,17 +711,17 @@ function showNotification(message, type = 'info') {
     
     notification.style.cssText = `
         position: fixed;
-        top: 80px;
+        top: 70px;
         left: 50%;
         transform: translateX(-50%);
         background: ${bgColor};
         color: ${type === 'success' ? 'white' : 'var(--text-primary)'};
-        padding: 16px 32px;
+        padding: 14px 28px;
         border-radius: 50px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
         z-index: 10000;
         font-weight: 600;
-        font-size: 15px;
+        font-size: 14px;
         animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1), slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 2.6s;
     `;
     
@@ -731,20 +729,6 @@ function showNotification(message, type = 'info') {
     
     setTimeout(() => notification.remove(), 3000);
 }
-
-// Notification animations
-const notifStyle = document.createElement('style');
-notifStyle.textContent = `
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
-        to { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-    @keyframes slideUp {
-        from { opacity: 1; transform: translateX(-50%) translateY(0); }
-        to { opacity: 0; transform: translateX(-50%) translateY(-30px); }
-    }
-`;
-document.head.appendChild(notifStyle);
 
 // === BOTTOM NAV ===
 const navItems = document.querySelectorAll('.nav-item:not(.add-post)');
@@ -765,20 +749,34 @@ document.querySelector('.add-post').addEventListener('click', function() {
     showNotification('Create new post...');
 });
 
-// === AUTO-HIDING HEADER ===
+// === AUTO-HIDING HEADER (BOTTOM NAV STAYS VISIBLE) ===
 let lastScroll = 0;
-const header = document.querySelector('.main-header');
+let scrollTimeout = null;
 
 feedScroll.addEventListener('scroll', () => {
     const currentScroll = feedScroll.scrollTop;
     
-    if (currentScroll > lastScroll && currentScroll > 50) {
-        header.style.transform = 'translateY(-100%)';
-        header.style.transition = 'transform 0.3s';
-    } else {
-        header.style.transform = 'translateY(0)';
-        header.style.transition = 'transform 0.3s';
+    // Clear previous timeout
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
     }
+    
+    // Hide customize button and header when scrolling down
+    if (currentScroll > lastScroll && currentScroll > 100) {
+        // Scrolling down - hide header and button only
+        mainHeader.classList.add('hidden');
+        customizeBtn.classList.add('hidden');
+    } else if (currentScroll < lastScroll) {
+        // Scrolling up - show header and button
+        mainHeader.classList.remove('hidden');
+        mainHeader.classList.add('compact');
+        customizeBtn.classList.remove('hidden');
+    }
+    
+    // After scrolling stops, restore header to normal size
+    scrollTimeout = setTimeout(() => {
+        mainHeader.classList.remove('compact');
+    }, 500);
     
     lastScroll = currentScroll;
 });
@@ -799,7 +797,7 @@ feedScroll.addEventListener('touchmove', (e) => {
         const pullDistance = touchEndY - touchStartY;
         
         if (pullDistance > 0) {
-            header.style.transform = `translateY(${Math.min(pullDistance / 3, 50)}px)`;
+            mainHeader.style.transform = `translateY(${Math.min(pullDistance / 3, 50)}px)`;
         }
     }
 }, { passive: true });
@@ -807,8 +805,8 @@ feedScroll.addEventListener('touchmove', (e) => {
 feedScroll.addEventListener('touchend', () => {
     const pullDistance = touchEndY - touchStartY;
     
-    header.style.transition = 'transform 0.3s';
-    header.style.transform = 'translateY(0)';
+    mainHeader.style.transition = 'transform 0.3s';
+    mainHeader.style.transform = 'translateY(0)';
     
     if (pullDistance > 100 && feedScroll.scrollTop === 0) {
         showNotification('Refreshing feed...');
@@ -818,72 +816,17 @@ feedScroll.addEventListener('touchend', () => {
     }
     
     setTimeout(() => {
-        header.style.transition = '';
+        mainHeader.style.transition = '';
     }, 300);
 }, { passive: true });
-// === INITIALIZATION ===
-console.log('🚀 Professional Social Feed App Loaded');
-console.log('✨ Enhanced Features:');
-console.log('  ✓ 10 Unique Scrolling Options with distinct behaviors');
-console.log('  ✓ Live Preview with Apply Button');
-console.log('  ✓ Fully Mobile Responsive');
-console.log('  ✓ Custom Color Themes (Live Preview)');
-console.log('  ✓ 3 Background Modes');
-console.log('  ✓ Dynamic Card Spacing');
-console.log('  ✓ Pull-to-Refresh');
-console.log('  ✓ Auto-hiding Header');
-console.log('  ✓ Infinite Scroll Support');
-console.log('  ✓ Social Media Sharing');
-console.log('  ✓ Advanced Animations');
-console.log('  ✓ Production-Ready Code');
 
-// === KEYBOARD SHORTCUTS ===
-document.addEventListener('keydown', (e) => {
-    // Press 'C' to open customize panel
-    if (e.key === 'c' || e.key === 'C') {
-        if (!customizePanel.classList.contains('open')) {
-            customizePanel.classList.add('open');
-        }
-    }
-    
-    // Press 'Escape' to close customize panel
-    if (e.key === 'Escape') {
-        if (customizePanel.classList.contains('open')) {
-            customizePanel.classList.remove('open');
-        }
-    }
-    
-    // Press 'Enter' to apply settings when panel is open
-    if (e.key === 'Enter' && customizePanel.classList.contains('open')) {
-        applyBtn.click();
-    }
-});
-
-// === SMOOTH SCROLL TO TOP ===
+// === SCROLL TO TOP BUTTON ===
 let scrollToTopBtn = null;
 
 function createScrollToTopButton() {
     scrollToTopBtn = document.createElement('button');
     scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollToTopBtn.style.cssText = `
-        position: fixed;
-        bottom: 100px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: var(--primary);
-        color: white;
-        border: none;
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        box-shadow: 0 8px 24px rgba(255, 59, 48, 0.4);
-        z-index: 999;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    `;
+    scrollToTopBtn.className = 'scroll-to-top';
     
     scrollToTopBtn.addEventListener('click', () => {
         feedScroll.scrollTo({
@@ -921,26 +864,6 @@ feedScroll.addEventListener('scroll', () => {
         }, 300);
     }
 });
-
-// === PERFORMANCE OPTIMIZATION ===
-// Debounce function for scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// === ACCESSIBILITY ENHANCEMENTS ===
-// Add aria-labels for better accessibility
-customizeBtn.setAttribute('aria-label', 'Customize theme and appearance');
-closePanel.setAttribute('aria-label', 'Close customize panel');
-applyBtn.setAttribute('aria-label', 'Apply customization changes');
 
 // === HAPTIC FEEDBACK (for mobile devices) ===
 function triggerHaptic() {
@@ -999,26 +922,6 @@ document.querySelectorAll('.card-media').forEach(media => {
     });
 });
 
-// Heart animation
-const heartStyle = document.createElement('style');
-heartStyle.textContent = `
-    @keyframes heartPop {
-        0% {
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 1;
-        }
-        50% {
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(heartStyle);
-
 // === SWIPE GESTURES ===
 let touchStartX = 0;
 let touchEndX = 0;
@@ -1039,51 +942,35 @@ function handleSwipe() {
     if (Math.abs(difference) > swipeThreshold) {
         if (difference > 0) {
             // Swiped left
-            showNotification('Swipe left detected');
+            console.log('Swipe left detected');
         } else {
             // Swiped right
-            showNotification('Swipe right detected');
+            console.log('Swipe right detected');
         }
     }
 }
 
-// === SAVE SETTINGS TO LOCALSTORAGE (Optional) ===
-// Note: This is commented out as per artifact restrictions
-// Uncomment if using in your own environment
-
-/*
-function saveSettings() {
-    localStorage.setItem('socialFeedSettings', JSON.stringify(appliedSettings));
-}
-
-function loadSettings() {
-    const saved = localStorage.getItem('socialFeedSettings');
-    if (saved) {
-        const settings = JSON.parse(saved);
-        appliedSettings = settings;
-        pendingSettings = { ...settings };
-        
-        // Apply saved settings
-        document.documentElement.style.setProperty('--primary', settings.primaryColor);
-        applyScrollStyle(settings.scrollStyle);
-        // ... apply other settings
+// === KEYBOARD SHORTCUTS ===
+document.addEventListener('keydown', (e) => {
+    // Press 'C' to open customize panel
+    if (e.key === 'c' || e.key === 'C') {
+        if (!customizePanel.classList.contains('open')) {
+            customizePanel.classList.add('open');
+        }
     }
-}
-
-// Load settings on page load
-loadSettings();
-*/
-
-// === PERFORMANCE MONITORING ===
-if ('performance' in window) {
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const perfData = window.performance.timing;
-            const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-            console.log(`⚡ Page loaded in ${pageLoadTime}ms`);
-        }, 0);
-    });
-}
+    
+    // Press 'Escape' to close customize panel
+    if (e.key === 'Escape') {
+        if (customizePanel.classList.contains('open')) {
+            customizePanel.classList.remove('open');
+        }
+    }
+    
+    // Press 'Enter' to apply settings when panel is open
+    if (e.key === 'Enter' && customizePanel.classList.contains('open')) {
+        applyBtn.click();
+    }
+});
 
 // === LAZY LOADING IMAGES ===
 if ('IntersectionObserver' in window) {
@@ -1106,54 +993,31 @@ if ('IntersectionObserver' in window) {
     });
 }
 
-// === THEME PERSISTENCE ===
-// Apply theme based on system preference
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    // User prefers dark mode (already default)
-    console.log('🌙 Dark mode detected');
-} else {
-    console.log('☀️ Light mode available');
+// === INITIALIZATION MESSAGE ===
+console.log('🚀 Mobile-Optimized Social Feed Loaded');
+console.log('✨ Features:');
+console.log('  ✓ Instagram-like card sizing');
+console.log('  ✓ Auto-hiding navigation');
+console.log('  ✓ Back button in customize panel');
+console.log('  ✓ Responsive design');
+console.log('  ✓ Pull-to-refresh');
+console.log('  ✓ Double-tap to like');
+console.log('  ✓ Haptic feedback');
+console.log('  ✓ Smooth animations');
+
+// === PERFORMANCE MONITORING ===
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const perfData = window.performance.timing;
+            const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+            console.log(`⚡ Page loaded in ${pageLoadTime}ms`);
+        }, 0);
+    });
 }
-
-// Listen for theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (e.matches) {
-        console.log('🌙 Switched to dark mode');
-    } else {
-        console.log('☀️ Switched to light mode');
-    }
-});
-
-// === FINAL INITIALIZATION MESSAGE ===
-setTimeout(() => {
-    console.log('');
-    console.log('═══════════════════════════════════════════');
-    console.log('  🎉 All Systems Ready!');
-    console.log('  📱 Mobile optimized & fully responsive');
-    console.log('  ⚡ High performance animations');
-    console.log('  🎨 Live preview with apply button');
-    console.log('  ♿ Accessibility enhanced');
-    console.log('  🚀 Production ready!');
-    console.log('═══════════════════════════════════════════');
-    console.log('');
-    console.log('💡 Keyboard shortcuts:');
-    console.log('  • Press "C" to open customize panel');
-    console.log('  • Press "Escape" to close panel');
-    console.log('  • Press "Enter" to apply settings');
-    console.log('');
-    console.log('📱 Touch gestures:');
-    console.log('  • Double tap image to like');
-    console.log('  • Swipe left/right for actions');
-    console.log('  • Pull down to refresh');
-    console.log('');
-}, 1000);
-
-// === ERROR HANDLING ===
-window.addEventListener('error', (e) => {
-    console.error('Application error:', e.message);
-});
 
 // === READY STATE ===
 document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ DOM fully loaded and parsed');
+    console.log('📱 Perfect for mobile viewing!');
 });
